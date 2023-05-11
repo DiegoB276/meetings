@@ -3,11 +3,11 @@ import 'package:postgres/postgres.dart';
 class Conection {
   //Realiza la conexion conla base de datos
   final PostgreSQLConnection conn = PostgreSQLConnection(
-    '######', //Host Name
+    '########3', //Host Name
     5432, //Port
-    '#####', //Database Name
-    username: '######', //Username Database
-    password: '#########', //Password Database
+    '######33', //Database Name
+    username: '#########3', //Username Database
+    password: '############', //Password Database
   );
   void validateConnection() async {
     if (conn.isClosed) {
@@ -24,7 +24,7 @@ class Conection {
 
   Future<void> deleteMeet(int id) async {
     await conn.open();
-    await conn.query('DELETE FROM #### WHERE id = @id',
+    await conn.query('DELETE FROM ##### WHERE id = @id',
         substitutionValues: {'id': id});
     await conn.close();
   }
@@ -32,7 +32,7 @@ class Conection {
 //Genera un Select*from
   Future<List<List<dynamic>>> getData() async {
     await conn.open();
-    final results = await conn.query('SELECT * FROM #####');
+    final results = await conn.query('SELECT * FROM #######');
     await conn.close();
 
     return results.toList();
@@ -42,7 +42,7 @@ class Conection {
   Future<List<List<dynamic>>> getDataWithCode(int doc) async {
     await conn.open();
     final results =
-        await conn.query('SELECT * FROM #### WHERE document = ' "$doc" '');
+        await conn.query('SELECT * FROM #######3 WHERE document = ' "$doc" '');
     conn.close();
 
     return results.toList();
@@ -62,7 +62,7 @@ class Conection {
   ) async {
     await conn.open();
     String sql =
-        'INSERT INTO ###### (id, name, document, type_document, date_meet, time_meet, price_meet, date_f_meet, time_f_meet) VALUES (@id_param, @name_param, @document_param,@type_param, @date_meet_param, @time_meet_param, @price_param, @date_f_meet, @time_f_meet)';
+        'INSERT INTO ######## (id, name, document, type_document, date_meet, time_meet, price_meet, date_f_meet, time_f_meet) VALUES (@id_param, @name_param, @document_param,@type_param, @date_meet_param, @time_meet_param, @price_param, @date_f_meet, @time_f_meet)';
     Map<String, dynamic> values = {
       'id_param': idP,
       'name_param': nameP,

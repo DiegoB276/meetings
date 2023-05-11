@@ -1,5 +1,4 @@
 import 'dart:async';
-
 import 'package:citas/models/data_base_helper.dart';
 import 'package:citas/widgets/my_drawer.dart';
 import 'package:flutter/material.dart';
@@ -42,7 +41,7 @@ class _CampsFormState extends State<CampsForm> {
   }
 
   //Lanza un snackbar o mensaje que dice que la cita ha sido agendada o cancelada
-  void launchSnackBar(BuildContext context, String text) {
+  void launchSnackBar(BuildContext context, String text, Color color) {
     SmartSnackBars.showCustomSnackBar(
       context: context,
       persist: false,
@@ -50,7 +49,8 @@ class _CampsFormState extends State<CampsForm> {
       animationCurve: Curves.bounceOut,
       child: Container(
         decoration: BoxDecoration(
-          color: const Color.fromARGB(255, 116, 160, 118),
+          //color: const Color.fromARGB(255, 116, 160, 118),
+          color: color,
           borderRadius: BorderRadius.circular(5),
         ),
         padding: const EdgeInsets.symmetric(vertical: 20, horizontal: 10),
@@ -93,7 +93,11 @@ class _CampsFormState extends State<CampsForm> {
         date == "Fecha Cita" ||
         priceController.text.isEmpty) {
       Exception("Error Hay Campos vacios");
-      launchSnackBar(context, "Error, hay campos vacíos");
+      launchSnackBar(
+        context,
+        "Error, hay campos vacíos",
+        Color.fromARGB(255, 134, 53, 42),
+      );
     }
   }
 
@@ -124,7 +128,6 @@ class _CampsFormState extends State<CampsForm> {
 
   @override
   Widget build(BuildContext context) {
-    //String timeP = TimeOfDay.now().format(context);
     String dateP = "$dateDay/$dateMonth/$dateYear";
     return Column(
       mainAxisAlignment: MainAxisAlignment.center,
@@ -253,18 +256,16 @@ class _CampsFormState extends State<CampsForm> {
             ),
             GestureDetector(
               onTap: () async {
-                if (date == "Fecha Cita") {
-                  DateTime? pickedDate = await showDatePicker(
-                    context: context,
-                    initialDate: DateTime.now(),
-                    firstDate: DateTime.now(),
-                    lastDate: DateTime(3000),
-                  );
-                  setState(() {
-                    date =
-                        "${pickedDate!.day}/${pickedDate.month}/${pickedDate.year}";
-                  });
-                }
+                DateTime? pickedDate = await showDatePicker(
+                  context: context,
+                  initialDate: DateTime.now(),
+                  firstDate: DateTime.now(),
+                  lastDate: DateTime(3000),
+                );
+                setState(() {
+                  date =
+                      "${pickedDate!.day}/${pickedDate.month}/${pickedDate.year}";
+                });
               },
               child: Container(
                 width: MediaQuery.of(context).size.width * 0.40,
@@ -486,7 +487,11 @@ class _CampsFormState extends State<CampsForm> {
                     );
                     Future.delayed(const Duration(seconds: 2)).then(
                       (value) {
-                        launchSnackBar(context, "Cita Agendada");
+                        launchSnackBar(
+                          context,
+                          "Cita Agendada",
+                          const Color.fromARGB(255, 116, 160, 118),
+                        );
                       },
                     );
                     Future.delayed(const Duration(milliseconds: 200)).then(
@@ -531,7 +536,8 @@ class _CampsFormState extends State<CampsForm> {
               ),
               GestureDetector(
                 onTap: () {
-                  launchSnackBar(context, "Cita Cancelada");
+                  launchSnackBar(context, "Cita Cancelada",
+                      Color.fromARGB(255, 134, 53, 42));
 
                   Future.delayed(const Duration(seconds: 2)).then(
                     (value) {
@@ -584,7 +590,11 @@ class _HomePageMobileState extends State<HomePageMobile> {
       backgroundColor: const Color.fromARGB(255, 255, 255, 255),
       appBar: AppBar(
         backgroundColor: const Color.fromRGBO(48, 204, 176, 1),
-        elevation: 0,
+        title: Text(
+          "Bienvenido",
+          style: GoogleFonts.arvo(),
+        ),
+        centerTitle: true,
       ),
       drawer: const MyDrawer(),
       body: SizedBox(

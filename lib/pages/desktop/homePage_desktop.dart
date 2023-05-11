@@ -1,4 +1,7 @@
-// ignore: file_names
+
+//********************************************Desktop Version was builder with c# and .net forms*******************************************
+
+/*
 import 'package:google_fonts/google_fonts.dart';
 import 'package:flutter/material.dart';
 
@@ -297,6 +300,7 @@ class _DataBoxState extends State<DataBox> {
 }
 
 //Info Factura ------------------------------------------------------------------
+// ignore: must_be_immutable
 class BillDetails extends StatelessWidget {
   int? code;
   int? dateDay;
@@ -589,3 +593,4 @@ class _BoxButtonState extends State<BoxButton> {
     );
   }
 }
+*/

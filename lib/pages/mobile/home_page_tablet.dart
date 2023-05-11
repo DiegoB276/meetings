@@ -43,7 +43,7 @@ class _CampsFormState extends State<CampsForm> {
   }
 
   //Lanza un snackbar o mensaje que dice que la cita ha sido agendada o cancelada
-  void launchSnackBar(BuildContext context, String text) {
+  void launchSnackBar(BuildContext context, String text, Color color) {
     SmartSnackBars.showCustomSnackBar(
       context: context,
       persist: false,
@@ -51,7 +51,8 @@ class _CampsFormState extends State<CampsForm> {
       animationCurve: Curves.bounceOut,
       child: Container(
         decoration: BoxDecoration(
-          color: const Color.fromARGB(255, 116, 160, 118),
+          //color: const Color.fromARGB(255, 116, 160, 118),
+          color: color,
           borderRadius: BorderRadius.circular(5),
         ),
         padding: const EdgeInsets.symmetric(vertical: 20, horizontal: 10),
@@ -94,7 +95,11 @@ class _CampsFormState extends State<CampsForm> {
         date == "Fecha Cita" ||
         priceController.text.isEmpty) {
       Exception("Error Hay Campos vacios");
-      launchSnackBar(context, "Error, hay campos vacíos");
+      launchSnackBar(
+        context,
+        "Error, hay campos vacíos",
+        Color.fromARGB(255, 134, 53, 42),
+      );
     }
   }
 
@@ -485,7 +490,11 @@ class _CampsFormState extends State<CampsForm> {
                     );
                     Future.delayed(const Duration(seconds: 2)).then(
                       (value) {
-                        launchSnackBar(context, "Cita Agendada");
+                        launchSnackBar(
+                          context,
+                          "Cita Agendada",
+                          const Color.fromARGB(255, 116, 160, 118),
+                        );
                       },
                     );
                     Future.delayed(const Duration(milliseconds: 200)).then(
@@ -530,7 +539,11 @@ class _CampsFormState extends State<CampsForm> {
               ),
               GestureDetector(
                 onTap: () {
-                  launchSnackBar(context, "Cita Cancelada");
+                  launchSnackBar(
+                    context,
+                    "Cita Cancelada",
+                    Color.fromARGB(255, 134, 53, 42),
+                  );
                   Future.delayed(const Duration(seconds: 2)).then(
                     (value) {
                       nameController.clear();
@@ -581,6 +594,11 @@ class _HomePageTabletState extends State<HomePageTablet> {
     return Scaffold(
       appBar: AppBar(
         backgroundColor: const Color.fromRGBO(48, 204, 176, 1),
+        title: Text(
+          "Bienvenido",
+          style: GoogleFonts.arvo(),
+        ),
+        centerTitle: true,
       ),
       drawer: const MyDrawer(),
       backgroundColor: Colors.white,

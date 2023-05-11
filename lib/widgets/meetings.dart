@@ -4,6 +4,7 @@ import 'package:flutter_slidable/flutter_slidable.dart';
 import 'package:smart_snackbars/smart_snackbars.dart';
 import '../models/data_base_helper.dart';
 
+// ignore: must_be_immutable
 class MeetingDone extends StatelessWidget {
   final int idP;
   final String nameP;
@@ -51,47 +52,51 @@ class MeetingDone extends StatelessWidget {
             child: Row(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
-                Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  children: [
-                    Text(
-                      nameP.toString(),
-                      style: GoogleFonts.inter(
-                          fontSize: 18, fontWeight: FontWeight.bold),
-                    ),
-                    const SizedBox(
-                      height: 5,
-                    ),
-                    Text(
-                      "Código: " "${idP.toString()}",
-                      style: GoogleFonts.inter(fontSize: 18),
-                    ),
-                    const SizedBox(
-                      height: 5,
-                    ),
-                    Text(
-                      "${typeP.toString()}" ":" " ${docP.toString()}",
-                      style: GoogleFonts.inter(fontSize: 17),
-                    ),
-                    const SizedBox(
-                      height: 5,
-                    ),
-                    Container(
-                      decoration: BoxDecoration(
-                        color: const Color.fromARGB(255, 186, 194, 196),
-                        borderRadius: BorderRadius.circular(5),
+                SizedBox(
+                  width: 250,
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: [
+                      Text(
+                        nameP.toString(),
+                        style: GoogleFonts.inter(
+                            fontSize: 17, fontWeight: FontWeight.bold),
+                        overflow: TextOverflow.ellipsis,
                       ),
-                      child: Padding(
-                        padding: const EdgeInsets.all(5),
-                        child: Text(
-                          "Precio: \$" "${priceP.toString()}",
-                          style: const TextStyle(
-                              fontSize: 17, fontWeight: FontWeight.w600),
+                      const SizedBox(
+                        height: 5,
+                      ),
+                      Text(
+                        "Código: " "${idP.toString()}",
+                        style: GoogleFonts.inter(fontSize: 16),
+                      ),
+                      const SizedBox(
+                        height: 5,
+                      ),
+                      Text(
+                        "${typeP.toString()}" ":" " ${docP.toString()}",
+                        style: GoogleFonts.inter(fontSize: 16),
+                      ),
+                      const SizedBox(
+                        height: 5,
+                      ),
+                      Container(
+                        decoration: BoxDecoration(
+                          color: const Color.fromARGB(255, 186, 194, 196),
+                          borderRadius: BorderRadius.circular(5),
                         ),
-                      ),
-                    )
-                  ],
+                        child: Padding(
+                          padding: const EdgeInsets.all(5),
+                          child: Text(
+                            "Precio: \$" "${priceP.toString()}",
+                            style: const TextStyle(
+                                fontSize: 16, fontWeight: FontWeight.w600),
+                          ),
+                        ),
+                      )
+                    ],
+                  ),
                 ),
                 Column(
                   crossAxisAlignment: CrossAxisAlignment.end,
@@ -99,14 +104,14 @@ class MeetingDone extends StatelessWidget {
                   children: [
                     Text(
                       dateP.toString(),
-                      style: GoogleFonts.inter(fontSize: 17),
+                      style: GoogleFonts.inter(fontSize: 15),
                     ),
                     const SizedBox(
                       height: 5,
                     ),
                     Text(
                       timeP.toString(),
-                      style: GoogleFonts.inter(fontSize: 17),
+                      style: GoogleFonts.inter(fontSize: 15),
                     )
                   ],
                 ),
@@ -234,7 +239,7 @@ class MeetingDonePage extends StatefulWidget {
 class _MeetingDonePageState extends State<MeetingDonePage> {
   List<List<dynamic>> tableData = [];
 
-  void launchSnackBar(BuildContext context, String text) {
+  void launchSnackBar(BuildContext context, String text, Color color) {
     SmartSnackBars.showCustomSnackBar(
       context: context,
       persist: false,
@@ -242,7 +247,8 @@ class _MeetingDonePageState extends State<MeetingDonePage> {
       animationCurve: Curves.bounceOut,
       child: Container(
         decoration: BoxDecoration(
-          color: const Color.fromARGB(255, 116, 160, 118),
+          //color: const Color.fromARGB(255, 116, 160, 118),
+          color: color,
           borderRadius: BorderRadius.circular(5),
         ),
         padding: const EdgeInsets.symmetric(vertical: 20, horizontal: 10),
@@ -303,7 +309,10 @@ class _MeetingDonePageState extends State<MeetingDonePage> {
     return Scaffold(
       appBar: AppBar(
         backgroundColor: const Color.fromRGBO(48, 204, 176, 1),
-        title: const Text("Citas Agendadas"),
+        title: Text(
+          "Citas Agendadas",
+          style: GoogleFonts.arvo(),
+        ),
         centerTitle: true,
       ),
       body: tableData.isEmpty
@@ -311,7 +320,7 @@ class _MeetingDonePageState extends State<MeetingDonePage> {
               child: CircularProgressIndicator(color: Colors.green.shade500),
             )
           : Padding(
-              padding: const EdgeInsets.only(top: 10, bottom: 10),
+              padding: const EdgeInsets.only(bottom: 10),
               child: ListView.builder(
                 itemCount: tableData.length,
                 itemBuilder: (context, index) {
@@ -330,7 +339,10 @@ class _MeetingDonePageState extends State<MeetingDonePage> {
                       Future.delayed(const Duration(milliseconds: 500)).then(
                         (value) {
                           launchSnackBar(
-                              context, "Cita Eliminada Correctamente");
+                            context,
+                            "Cita Eliminada Correctamente",
+                            const Color.fromARGB(255, 116, 160, 118),
+                          );
                           fetchData();
                         },
                       );
@@ -374,7 +386,10 @@ class _MeetingSearchPageState extends State<MeetingSearchPage> {
     return Scaffold(
       appBar: AppBar(
         backgroundColor: const Color.fromRGBO(48, 204, 176, 1),
-        title: const Text("Buscar Cita"),
+        title: Text(
+          "Buscar Cita",
+          style: GoogleFonts.arvo(),
+        ),
         centerTitle: true,
       ),
       body: SingleChildScrollView(
