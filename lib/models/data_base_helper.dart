@@ -3,10 +3,10 @@ import 'package:postgres/postgres.dart';
 class Conection {
   //Realiza la conexion conla base de datos
   final PostgreSQLConnection conn = PostgreSQLConnection(
-    '########3', //Host Name
+    '########', //Host Name
     5432, //Port
-    '######33', //Database Name
-    username: '#########3', //Username Database
+    '######', //Database Name
+    username: '#########', //Username Database
     password: '############', //Password Database
   );
   void validateConnection() async {

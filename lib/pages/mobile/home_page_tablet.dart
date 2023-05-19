@@ -1,11 +1,11 @@
 import 'dart:async';
-
 import 'package:citas/widgets/my_drawer.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:smart_snackbars/smart_snackbars.dart';
 import '../../models/data_base_helper.dart';
 import '../../models/generate_code.dart';
+import 'package:connectivity_plus/connectivity_plus.dart';
 
 //-------------------------------------------------------------------------------
 // ignore: must_be_immutable
@@ -444,9 +444,9 @@ class _CampsFormState extends State<CampsForm> {
               child: TextFormField(
                 controller: priceController,
                 keyboardType: TextInputType.number,
+                textAlign: TextAlign.center,
                 decoration: InputDecoration(
                   hintStyle: const TextStyle(fontSize: 17),
-                  labelText: "Precio",
                   enabledBorder: OutlineInputBorder(
                     borderRadius: BorderRadius.circular(10),
                     borderSide: const BorderSide(
@@ -473,43 +473,61 @@ class _CampsFormState extends State<CampsForm> {
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
               GestureDetector(
-                onTap: () {
-                  try {
-                    validateCamps();
-                    Conection conection = Conection();
-                    conection.addElements(
-                      code,
-                      nameController.text,
-                      int.parse(documentController.text),
-                      typeDoc,
-                      date,
-                      time,
-                      int.parse(priceController.text),
-                      dateP,
-                      timeP(context),
+                onTap: () async {
+                  final connectivityResult =
+                      await (Connectivity().checkConnectivity());
+                  if (connectivityResult == ConnectivityResult.wifi ||
+                      connectivityResult == ConnectivityResult.mobile) {
+                    try {
+                      validateCamps();
+                      Conection conection = Conection();
+                      conection.addElements(
+                        code,
+                        nameController.text,
+                        int.parse(documentController.text),
+                        typeDoc,
+                        date,
+                        time,
+                        int.parse(priceController.text),
+                        dateP,
+                        timeP(context),
+                      );
+                      Future.delayed(const Duration(seconds: 2)).then(
+                        (value) {
+                          launchSnackBar(
+                            context,
+                            "Cita Agendada",
+                            const Color.fromARGB(255, 116, 160, 118),
+                          );
+                        },
+                      );
+                      Future.delayed(const Duration(milliseconds: 200)).then(
+                        (value) {
+                          nameController.clear();
+                          documentController.clear();
+                          phoneController.clear();
+                          priceController.clear();
+                          date = "Fecha Cita";
+                          time = "Hora Cita";
+                          code = generateCodeRandom();
+                        },
+                      );
+                    } on Exception catch (exception) {
+                      exception.toString();
+                      nameController.clear();
+                      documentController.clear();
+                      phoneController.clear();
+                      priceController.clear();
+                      date = "Fecha Cita";
+                      time = "Hora Cita";
+                      code = generateCodeRandom();
+                    }
+                  } else {
+                    launchSnackBar(
+                      context,
+                      "No hay conexion a internet",
+                      Color.fromARGB(255, 82, 19, 141),
                     );
-                    Future.delayed(const Duration(seconds: 2)).then(
-                      (value) {
-                        launchSnackBar(
-                          context,
-                          "Cita Agendada",
-                          const Color.fromARGB(255, 116, 160, 118),
-                        );
-                      },
-                    );
-                    Future.delayed(const Duration(milliseconds: 200)).then(
-                      (value) {
-                        nameController.clear();
-                        documentController.clear();
-                        phoneController.clear();
-                        priceController.clear();
-                        date = "Fecha Cita";
-                        time = "Hora Cita";
-                        code = generateCodeRandom();
-                      },
-                    );
-                  } on Exception catch (exception) {
-                    exception.toString();
                     nameController.clear();
                     documentController.clear();
                     phoneController.clear();
@@ -521,7 +539,7 @@ class _CampsFormState extends State<CampsForm> {
                 },
                 child: Container(
                   height: 60,
-                  width: MediaQuery.of(context).size.width * 0.35,
+                  width: MediaQuery.of(context).size.width * 0.30,
                   decoration: BoxDecoration(
                     color: Colors.black,
                     borderRadius: BorderRadius.circular(20),

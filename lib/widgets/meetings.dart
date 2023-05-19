@@ -3,6 +3,7 @@ import 'package:google_fonts/google_fonts.dart';
 import 'package:flutter_slidable/flutter_slidable.dart';
 import 'package:smart_snackbars/smart_snackbars.dart';
 import '../models/data_base_helper.dart';
+import 'package:skeletons/skeletons.dart';
 
 // ignore: must_be_immutable
 class MeetingDone extends StatelessWidget {
@@ -317,7 +318,7 @@ class _MeetingDonePageState extends State<MeetingDonePage> {
       ),
       body: tableData.isEmpty
           ? Center(
-              child: CircularProgressIndicator(color: Colors.green.shade500),
+              child: SkeletonListView(),
             )
           : Padding(
               padding: const EdgeInsets.only(bottom: 10),
@@ -464,8 +465,7 @@ class _MeetingSearchPageState extends State<MeetingSearchPage> {
                 height: 500,
                 child: tableData.isEmpty
                     ? Center(
-                        child: CircularProgressIndicator(
-                            color: Colors.green.shade500),
+                        child: SkeletonListTile(),
                       )
                     : Padding(
                         padding: const EdgeInsets.only(top: 10, bottom: 10),
