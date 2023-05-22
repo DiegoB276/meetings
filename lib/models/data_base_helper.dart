@@ -1,4 +1,8 @@
+import 'dart:io';
+
 import 'package:postgres/postgres.dart';
+import 'package:excel/excel.dart';
+import 'package:path_provider/path_provider.dart';
 
 class Conection {
   //Realiza la conexion conla base de datos
@@ -77,5 +81,45 @@ class Conection {
 
     await conn.execute(sql, substitutionValues: values);
     await conn.close();
+  }
+
+  //Descargar información de la base de datos.
+  Future<void> downloadData() async {
+    await conn.open();
+    final results = await conn.query('SELECT * FROM #####');
+    await conn.close();
+
+    final excel = Excel.createExcel();
+    final sheet = excel['Sheet1'];
+
+    // Agregar encabezados de columna
+    for (var columnIndex = 0;
+        columnIndex < results.first.length;
+        columnIndex++) {
+      sheet
+          .cell(
+              CellIndex.indexByColumnRow(rowIndex: 0, columnIndex: columnIndex))
+          .value = results.first[columnIndex].toString();
+    }
+
+    // Agregar datos a las filas
+    for (var rowIndex = 0; rowIndex < results.length; rowIndex++) {
+      final row = results[rowIndex];
+
+      for (var columnIndex = 0; columnIndex < row.length; columnIndex++) {
+        sheet
+            .cell(CellIndex.indexByColumnRow(
+                rowIndex: rowIndex + 1, columnIndex: columnIndex))
+            .value = row[columnIndex].toString();
+      }
+    }
+    //Directorio en el que se guardará el archivo
+    final directory = await getExternalStorageDirectory();
+    final filePath = '${directory!.path}/datos.xlsx';
+
+    //Proceso de guardada del archivo
+    final fileBytes = excel.save();
+    final file = File(filePath);
+    await file.writeAsBytes(fileBytes!);
   }
 }

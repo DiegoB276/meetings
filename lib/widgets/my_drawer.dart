@@ -1,3 +1,4 @@
+import 'package:citas/widgets/download_page.dart';
 import 'package:flutter/material.dart';
 
 import 'meetings.dart';
@@ -64,7 +65,25 @@ class MyDrawer extends StatelessWidget {
               style: TextStyle(fontSize: 20),
             ),
           ),
-          const Divider()
+          const Divider(),
+          ListTile(
+            onTap: () {
+              Navigator.of(context).push(
+                MaterialPageRoute(
+                  builder: (context) => const DownloadPage(),
+                ),
+              );
+            },
+            leading: const Icon(
+              Icons.download,
+              size: 25,
+            ),
+            title: const Text(
+              "Descargar Datos",
+              style: TextStyle(fontSize: 20),
+            ),
+          ),
+          const Divider(),
         ],
       ),
     );
